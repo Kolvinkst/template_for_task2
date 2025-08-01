@@ -2,7 +2,8 @@
 /**
  * @var array $arResult
  */
-
+require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_before.php");
+require($_SERVER["DOCUMENT_ROOT"]."/bitrix/modules/main/include/prolog_after.php");
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -23,36 +24,46 @@
         ?>
     </div>
     <?=$arResult["FORM_HEADER"]?>
+                                    <?php
+                                    $i = 0;
+                                $questions = $arResult['QUESTIONS'];
+                                $val_questions = array_values($questions);
+    ?>
     <div class="contact-form__form">
         <div class="contact-form__form-inputs">
-            <?php
-            foreach ($arResult["QUESTIONS"] as $arQuestion) {
-                $q_type=$arQuestion['STRUCTURE'][0]['FIELD_TYPE'];
-                switch($q_type) {
-                    case 'text':
-                        echo  "<div class='input contact-form__input'>" . "<label class='input__label'>"
-                               . "<div class='input__label-text'>" . $arQuestion['CAPTION'] . "</div>"
-                                . "<input class='input__input' type='text'>"
-                                . "<div class='input__notification'>" . "Поле должно содержать не менее 3-х символов"
-                                . "</div>" . "</label>" . "</div>";
-                    case 'email':
-                        echo  "<div class='input contact-form__input'>" . "<label class='input__label'>"
-                        . "<div class='input__label-text'>" . $arQuestion['CAPTION'] . "</div>"
-                . "<input class='input__input' type='email'>"
-                . "<div class='input__notification'>" . "Неверный формат почты" . "</div>" . "</label>" . "</div>";
-                    case 'textarea':
-                        echo  "<div class='contact-form__form-message'>"
-                            . "<div class='input'>" . "<label class='input__label'>"
-                            . "<div class='input__label-text'>" . $arQuestion['CAPTION'] . "</div>"
-                            . "<textarea class='input__input' type='text'>" . "</textarea>"
-                            . "<div class='input__notification'>" . "</div>"
-                            . "</label>" . "</div>"
-                            . "</div>";
-
-                }
-            }
-                ?>
-
+            <div class="input contact-form__input"><label class="input__label" for="medicine_name">
+                <div class="input__label-text">Ваше имя*
+                </div>
+                <input class="input__input" type="text" id="medicine_name" name="<?= "form_".$val_questions[$i]['STRUCTURE'][0]['FIELD_TYPE']."_".$val_questions[$i]['STRUCTURE'][0]['ID']; ?>" value=""
+                       required="">
+                <div class="input__notification">Поле должно содержать не менее 3-х символов</div>
+            </label></div>
+            <div class="input contact-form__input"><label class="input__label" for="medicine_company">
+                <div class="input__label-text">Компания/Должность*</div>
+                <input class="input__input" type="text" id="medicine_company" name="<?= "form_".$val_questions[$i++]['STRUCTURE'][0]['FIELD_TYPE']."_".$val_questions[$i]['STRUCTURE'][0]['ID']; ?>" value=""
+                       required="">
+                <div class="input__notification">Поле должно содержать не менее 3-х символов</div>
+            </label></div>
+            <div class="input contact-form__input"><label class="input__label" for="medicine_email">
+                <div class="input__label-text">Email*</div>
+                <input class="input__input" type="email" id="medicine_email" name="<?="form_".$val_questions[$i++]['STRUCTURE'][0]['FIELD_TYPE']."_".$val_questions[$i]['STRUCTURE'][0]['ID']; ?>" value=""
+                       required="">
+                <div class="input__notification">Неверный формат почты</div>
+            </label></div>
+            <div class="input contact-form__input"><label class="input__label" for="medicine_phone">
+                <div class="input__label-text">Номер телефона*</div>
+                <input class="input__input" type="tel" id="medicine_phone"
+                       data-inputmask="'mask': '+79999999999', 'clearIncomplete': 'true'" maxlength="12"
+                       x-autocompletetype="phone-full" name="<?="form_".$val_questions[$i++]['STRUCTURE'][0]['FIELD_TYPE']."_".$val_questions[$i]['STRUCTURE'][0]['ID']; ?>" value="" required=""></label></div>
+        </div>
+        <div class="contact-form__form-message">
+            <div class="input"><label class="input__label" for="medicine_message">
+                <div class="input__label-text">Сообщение</div>
+                <textarea class="input__input" type="text" id="medicine_message" name="<?="form_".$val_questions[$i++]['STRUCTURE'][0]['FIELD_TYPE']."_".$val_questions[$i]['STRUCTURE'][0]['ID']; ?>"
+                          value=""></textarea>
+                <div class="input__notification"></div>
+            </label></div>
+        </div>
         <div class="contact-form__bottom">
             <div class="contact-form__bottom-policy">Нажимая &laquo;Отправить&raquo;, Вы&nbsp;подтверждаете, что
                 ознакомлены, полностью согласны и&nbsp;принимаете условия &laquo;Согласия на&nbsp;обработку персональных
@@ -63,6 +74,7 @@
                 <div class="form-button__title">Оставить заявку</div>
             </button>
         </div>
+
 </div>
 <?=$arResult["FORM_FOOTER"]?>
 </div>
